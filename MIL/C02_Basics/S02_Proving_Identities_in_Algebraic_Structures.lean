@@ -125,7 +125,7 @@ theorem self_sub (a : R) : a - a = 0 := by
   -- have h : -a + - -a = 0 := by
   --   rw [neg_neg, neg_add_cancel]
   -- rw [add_comm] at h
-  -- rw [← neg_neg]
+  -- rw [← neg_neg] test
 
 theorem one_add_one_eq_two : 1 + 1 = (2 : R) := by
   norm_num
