@@ -115,17 +115,13 @@ example (a b : ℝ) : a - b = a + -b :=
 example (a b : ℝ) : a - b = a + -b := by
   rfl
 
+#eval Lean.versionString
+
 namespace MyRing
 variable {R : Type*} [Ring R]
 
 theorem self_sub (a : R) : a - a = 0 := by
-  have h : -(a + a) = -a - a := by
-    rw[one_mul a]
-  -- nth_rw 2 [← neg_neg a]
-  -- have h : -a + - -a = 0 := by
-  --   rw [neg_neg, neg_add_cancel]
-  -- rw [add_comm] at h
-  -- rw [← neg_neg] test
+  rw [sub_eq_add_neg, add_neg_cancel]
 
 theorem one_add_one_eq_two : 1 + 1 = (2 : R) := by
   norm_num
@@ -164,15 +160,15 @@ theorem add_left_cancel {a b c : G} (h : a * b = a * c) : b = c := by
   rw [← mul_assoc, left_inv, ← mul_assoc, left_inv] at hp
   exact hp
 
-theorem mul_inv_cancel (a : G) : a * a⁻¹ = 1 := by
-  have h : a⁻¹ * (a * a⁻¹) = a⁻¹ * 1 := by
-    rw [← mul_assoc, inv_mul_cancel, one_mul, mul_one]
-  apply add_left_cancel at h
-  exact h
-
 theorem mul_one (a : G) : a * 1 = a := by
   have h : a⁻¹ * (a * 1) = a⁻¹ * a := by
       rw [← mul_assoc, inv_mul_cancel, one_mul]
+  apply add_left_cancel at h
+  exact h
+
+theorem mul_inv_cancel (a : G) : a * a⁻¹ = 1 := by
+  have h : a⁻¹ * (a * a⁻¹) = a⁻¹ * 1 := by
+    rw [← mul_assoc, inv_mul_cancel, one_mul, mul_one]
   apply add_left_cancel at h
   exact h
 
